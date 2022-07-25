@@ -1,0 +1,11 @@
+{
+  "name": "@kuiski/monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "slack-forever-frontend"
+  ],
+  "dependencies": {
+    "http-proxy": "^1.18.1"
+  }
+}
