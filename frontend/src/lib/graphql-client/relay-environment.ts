@@ -6,6 +6,7 @@ import {
   Variables,
   Store,
 } from 'relay-runtime'
+import { EnvironmentKey } from 'recoil-relay'
 
 const fetchRelay = async (params: RequestParameters, variables: Variables) => {
   const response = await fetch('/api/graphql', {
@@ -27,3 +28,5 @@ export const RelayEnvironment = new Environment({
   network: Network.create(fetchRelay),
   store: new Store(new RecordSource()),
 })
+
+export const myEnvironmentKey = new EnvironmentKey('My Environment')

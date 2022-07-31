@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "workspaces": [
-    "slack-forever-frontend"
+    "frontend",
+    "backend"
   ],
   "dependencies": {
     "http-proxy": "^1.18.1"
