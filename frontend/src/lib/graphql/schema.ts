@@ -1,6 +1,6 @@
-import { gql, Config } from "apollo-server-micro";
+import { gql, Config } from 'apollo-server-micro'
 
-export const typeDefs: Config["typeDefs"] = gql`
+export const typeDefs: Config['typeDefs'] = gql`
   type User {
     id: String
     team_id: String
@@ -38,6 +38,16 @@ export const typeDefs: Config["typeDefs"] = gql`
     members: [User!]
     topic: ChannelTopic
     purpose: ChannelPurpose
+    messages(date: String!): ChannelMessagesConnection
+  }
+
+  type ChannelMessagesConnection {
+    date: String
+    edges: [Message]
+  }
+
+  type ChannelMessagesEdge {
+    node: [Message]
   }
 
   type ChannelTopic {
@@ -52,8 +62,35 @@ export const typeDefs: Config["typeDefs"] = gql`
     lastSet: Int
   }
 
+  interface Message {
+    type: String!
+    ts: String!
+  }
+
+  type TextMessage implements Message {
+    type: String!
+    ts: String!
+    user: String!
+    text: String!
+  }
+
+  type UnknownMessage implements Message {
+    type: String!
+    ts: String!
+    text: String!
+  }
+
+  type ChannelsConnection {
+    nodes: [Channel]
+  }
+
+  type Viewer {
+    userId: String!
+    channels(names: [String]): ChannelsConnection
+  }
+
   type Query {
     users: [User]
-    channels: [Channel]
+    viewer: Viewer!
   }
-`;
+`

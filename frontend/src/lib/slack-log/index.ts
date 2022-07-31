@@ -2,6 +2,7 @@ import { Bucket, Storage } from '@google-cloud/storage'
 import DataLoader from 'dataloader'
 import { Channel, ChannelSchema } from '@/entities/channel'
 import { User, UserSchema } from '@/entities/user'
+import { Message } from '@/entities/message'
 
 export abstract class SlackLogDatasource {
   abstract getUser(id: string): Promise<any>
@@ -10,6 +11,10 @@ export abstract class SlackLogDatasource {
   abstract getChannels(): Promise<any[]>
   abstract getJoinedChannels(userId: string): Promise<any[]>
   abstract getChannelMembers(channelId: string): Promise<User[] | undefined>
+  abstract getChannelMessages(
+    channelId: string,
+    date: string
+  ): Promise<Message[] | undefined>
 }
 
 export class CloudStorageDatasource extends SlackLogDatasource {
@@ -18,6 +23,7 @@ export class CloudStorageDatasource extends SlackLogDatasource {
   userLoader: DataLoader<string, User>
   channelLoader: DataLoader<string, Channel>
   channelMemberLoader: DataLoader<string, User[]>
+  channelMessageLoader: DataLoader<[string, string], Message[]>
 
   constructor(storage: Storage, bucket: string) {
     super()
@@ -38,7 +44,7 @@ export class CloudStorageDatasource extends SlackLogDatasource {
       return res
     })
 
-    this.channelMemberLoader = new DataLoader<any, any>(async (ids) => {
+    this.channelMemberLoader = new DataLoader(async (ids) => {
       const rawChannels: any[] = await this._fetchChannels()
       const filteredRawChannels = ids.map((id) =>
         rawChannels.find((channel) => channel.id === id)
@@ -53,6 +59,14 @@ export class CloudStorageDatasource extends SlackLogDatasource {
       }
 
       return res
+    })
+
+    this.channelMessageLoader = new DataLoader(async (ids) => {
+      const promises = ids.map(([channelId, date]) => {
+        return this._fetchMessages(channelId, date)
+      })
+
+      return await Promise.all(promises)
     })
   }
 
@@ -82,6 +96,19 @@ export class CloudStorageDatasource extends SlackLogDatasource {
       .file('slack_export/channels.json')
       .download()
     return JSON.parse(contents.toString())
+  }
+
+  async _fetchMessages(channelId: string, date: string): Promise<Message[]> {
+    const objPath = `slack_export/${channelId}/${date}.json` // Need escape
+    console.log(objPath)
+    try {
+      const contents = await this.bucket.file(objPath).download()
+      return JSON.parse(contents.toString())
+    } catch (err: any) {
+      console.error(err)
+      if (err.code === 404) return []
+      else throw err
+    }
   }
 
   async getChannel(id: string) {
@@ -118,5 +145,9 @@ export class CloudStorageDatasource extends SlackLogDatasource {
 
   async getChannelMembers(channelId: string) {
     return this.channelMemberLoader.load(channelId)
+  }
+
+  async getChannelMessages(channelId: string, date: string) {
+    return this.channelMessageLoader.load([channelId, date])
   }
 }
