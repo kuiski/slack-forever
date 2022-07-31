@@ -100,12 +100,10 @@ export class CloudStorageDatasource extends SlackLogDatasource {
 
   async _fetchMessages(channelId: string, date: string): Promise<Message[]> {
     const objPath = `slack_export/${channelId}/${date}.json` // Need escape
-    console.log(objPath)
     try {
       const contents = await this.bucket.file(objPath).download()
       return JSON.parse(contents.toString())
     } catch (err: any) {
-      console.error(err)
       if (err.code === 404) return []
       else throw err
     }
