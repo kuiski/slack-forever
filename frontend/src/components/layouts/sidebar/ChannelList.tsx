@@ -9,9 +9,11 @@ import {
   useSlackChannelMutators,
   useSlackChannelState,
 } from '@/stores/channels'
+import { useChannelList } from '@/stores/channelList'
 
 const ChannelList: React.FC = () => {
   const slackChannels = useSlackChannelState()
+  const channels = useChannelList()
 
   const { selectChannel, toggleSelectChannel } = useSlackChannelMutators()
 
@@ -28,11 +30,11 @@ const ChannelList: React.FC = () => {
 
   return (
     <List dense component="div" disablePadding>
-      {slackChannels.channels.map((ch) => (
+      {channels.map((ch) => (
         <ListItem key={ch.name} disablePadding>
           <ListItemButton
-            selected={slackChannels.selected.includes(ch.id)}
-            onClick={(e) => onClickChannel(e, ch.id)}
+            selected={slackChannels.selected.includes(ch.name)}
+            onClick={(e) => onClickChannel(e, ch.name)}
           >
             <ListItemText primary={'#  ' + ch.name} />
           </ListItemButton>

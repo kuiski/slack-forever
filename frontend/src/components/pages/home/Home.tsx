@@ -3,9 +3,10 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 
 import DefaultLayout from '@/components/layouts/DefaultLayout'
 import Typography from '@mui/material/Typography'
-
+import { NoSsr } from '@mui/material'
 import React from 'react'
 import MessagesContainer from '@/components/models/channel-message/MessagesContainer'
+import ErrorBoundary from '@/components/hoc/ErrorBoundary'
 
 export interface Props {
   projectId: string | null
@@ -23,7 +24,13 @@ const Home: React.FC<Props> = (props) => {
         <link rel="icon" href="/frontend/public/favicon.ico" />
       </Head>
       <main>
-        <MessagesContainer channels={['ai', 'bi']} date={date} />
+        <NoSsr>
+          <ErrorBoundary>
+            <React.Suspense fallback={'Loading'}>
+              <MessagesContainer channels={['ai', 'bi']} date={date} />
+            </React.Suspense>
+          </ErrorBoundary>
+        </NoSsr>
       </main>
     </DefaultLayout>
   )

@@ -6,6 +6,7 @@ import Toolbar from '@mui/material/Toolbar'
 
 import Sidebar from '@/components/layouts/sidebar/Sidebar'
 import Header from '@/components/layouts/Header'
+import NoSsr from '@mui/material/NoSsr'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -55,7 +56,9 @@ export default function DefaultLayout({ children }: LayoutProps) {
           }}
           open
         >
-          <Sidebar />
+          <NoSsr>
+            <Sidebar />
+          </NoSsr>
         </Drawer>
       </Box>
       <Box

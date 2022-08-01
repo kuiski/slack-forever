@@ -9,7 +9,9 @@ import {
 import { EnvironmentKey } from 'recoil-relay'
 
 const fetchRelay = async (params: RequestParameters, variables: Variables) => {
-  const response = await fetch('/api/graphql', {
+  if (!process.env.NEXT_PUBLIC_GRAPHQL_URL) throw Error('Set GRAPHQL_URL env')
+
+  const response = await fetch(process.env.NEXT_PUBLIC_GRAPHQL_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -24,9 +26,9 @@ const fetchRelay = async (params: RequestParameters, variables: Variables) => {
   return await response.json()
 }
 
-export const RelayEnvironment = new Environment({
+export const relayEnvironment = new Environment({
   network: Network.create(fetchRelay),
   store: new Store(new RecordSource()),
 })
 
-export const myEnvironmentKey = new EnvironmentKey('My Environment')
+export const relayEnvironmentKey = new EnvironmentKey('RecoilRelayEnvironment')

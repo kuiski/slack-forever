@@ -1,5 +1,6 @@
 import { gql, Config } from 'apollo-server-micro'
 
+// まだ自動化出来ていないので graphql/schema.graphqlを更新したらここにも反映する
 export const typeDefs: Config['typeDefs'] = gql`
   type User {
     id: String
@@ -29,20 +30,20 @@ export const typeDefs: Config['typeDefs'] = gql`
   }
 
   type Channel {
-    id: String
-    name: String
-    created: Int
-    creator: String
-    is_archived: Boolean
-    is_general: Boolean
+    id: String!
+    name: String!
+    created: Int!
+    creator: String!
+    is_archived: Boolean!
+    is_general: Boolean!
     members: [User!]
-    topic: ChannelTopic
-    purpose: ChannelPurpose
-    messages(date: String!): ChannelMessagesConnection
+    topic: ChannelTopic!
+    purpose: ChannelPurpose!
+    messages(date: String!): ChannelMessagesConnection!
   }
 
   type ChannelMessagesConnection {
-    date: String
+    date: String!
     edges: [Message]
   }
 

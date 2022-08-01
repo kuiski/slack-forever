@@ -7,7 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "proxy": "dev-rev-proxy -h localhost -p 3100 -c localhost.pem -k localhost-key.pem -H 0.0.0.0 -P 3000"
+    "proxy": "dev-rev-proxy -h localhost -p 3100 -c localhost.pem -k localhost-key.pem -H 0.0.0.0 -P 3000",
+    "relay": "relay-compiler",
+    "codegen": "graphql-codegen -c graphql/codegen.yaml"
+  },
+  "relay": {
+    "src": "./src",
+    "schema": "./graphql/schema.graphql",
+    "language": "typescript"
   },
   "dependencies": {
     "@date-io/dayjs": "^2.14.0",
@@ -43,13 +50,18 @@
     "swr": "^1.3.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.11.3",
+    "@graphql-codegen/typescript": "^2.7.2",
+    "@graphql-codegen/typescript-resolvers": "^2.7.2",
     "@slack/web-api": "^6.7.2",
     "@types/node": "^18.0.6",
     "@types/react": "^18.0.15",
+    "babel-plugin-relay": "^14.1.0",
     "dev-rev-proxy": "^0.1.1",
     "eslint": "8.20.0",
     "eslint-config-next": "12.2.2",
     "prettier": "^2.7.1",
+    "relay-compiler": "^14.1.0",
     "typescript": "^4.7.4",
     "zod": "^3.17.10"
   }

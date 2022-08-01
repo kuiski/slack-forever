@@ -11,6 +11,8 @@ import { CacheProvider, EmotionCache } from '@emotion/react'
 
 import createEmotionCache from '@/lib/createEmotionCache'
 import theme from '@/theme'
+import { RecoilRelayEnvironment } from 'recoil-relay'
+import { relayEnvironment, relayEnvironmentKey } from '@/lib/graphql/relay'
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache()
@@ -25,19 +27,24 @@ export default function MyApp(props: MyAppProps) {
   return (
     <SessionProvider session={pageProps.session}>
       <RecoilRoot>
-        <CacheProvider value={emotionCache}>
-          <Head>
-            <meta
-              name="viewport"
-              content="initial-scale=1, width=device-width"
-            />
-          </Head>
-          <ThemeProvider theme={theme}>
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            <Component {...pageProps} />
-          </ThemeProvider>
-        </CacheProvider>
+        <RecoilRelayEnvironment
+          environmentKey={relayEnvironmentKey}
+          environment={relayEnvironment}
+        >
+          <CacheProvider value={emotionCache}>
+            <Head>
+              <meta
+                name="viewport"
+                content="initial-scale=1, width=device-width"
+              />
+            </Head>
+            <ThemeProvider theme={theme}>
+              {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+              <CssBaseline />
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </CacheProvider>
+        </RecoilRelayEnvironment>
       </RecoilRoot>
     </SessionProvider>
   )
