@@ -55,7 +55,7 @@ const MessageContentContainer = () => {
       }}
     >
       {channels.map((channel) => (
-        <Paper sx={{ padding: 1, mb: multiChannel ? 1 : 0 }}>
+        <Paper key={channel.id} sx={{ padding: 1, mb: multiChannel ? 1 : 0 }}>
           <Typography variant="h6" sx={{ mb: 1 }}>
             #{channel.name}
           </Typography>

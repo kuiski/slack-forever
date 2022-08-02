@@ -58,7 +58,7 @@ export const resolvers: Resolvers<ApolloContext> = {
       // Not implemented message type
       if (obj.type !== 'message') return 'UnknownMessage'
 
-      if (!obj.subtype) {
+      if (!('subtype' in obj)) {
         return 'UserMessage'
       }
 
