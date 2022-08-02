@@ -14,6 +14,23 @@ export type Scalars = {
   Float: number;
 };
 
+export type BotIcon = {
+  __typename?: 'BotIcon';
+  image_36?: Maybe<Scalars['String']>;
+  image_48?: Maybe<Scalars['String']>;
+  image_72?: Maybe<Scalars['String']>;
+};
+
+export type BotMessage = Message & {
+  __typename?: 'BotMessage';
+  icons: BotIcon;
+  subtype: Scalars['String'];
+  text: Scalars['String'];
+  ts: Scalars['String'];
+  type: Scalars['String'];
+  username: Scalars['String'];
+};
+
 export type Channel = {
   __typename?: 'Channel';
   created: Scalars['Int'];
@@ -22,7 +39,7 @@ export type Channel = {
   is_archived: Scalars['Boolean'];
   is_general: Scalars['Boolean'];
   members?: Maybe<Array<User>>;
-  messages: ChannelMessagesConnection;
+  messages?: Maybe<ChannelMessagesConnection>;
   name: Scalars['String'];
   purpose: ChannelPurpose;
   topic: ChannelTopic;
@@ -63,27 +80,30 @@ export type ChannelsConnection = {
   nodes?: Maybe<Array<Maybe<Channel>>>;
 };
 
-export type Message = {
-  ts: Scalars['String'];
-  type: Scalars['String'];
-};
-
-export type Query = {
-  __typename?: 'Query';
-  users?: Maybe<Array<Maybe<User>>>;
-  viewer: Viewer;
-};
-
-export type TextMessage = Message & {
-  __typename?: 'TextMessage';
+export type JoinMessage = Message & {
+  __typename?: 'JoinMessage';
+  subtype: Scalars['String'];
   text: Scalars['String'];
   ts: Scalars['String'];
   type: Scalars['String'];
   user: Scalars['String'];
 };
 
+export type Message = {
+  text: Scalars['String'];
+  ts: Scalars['String'];
+  type: Scalars['String'];
+};
+
+export type Query = {
+  __typename?: 'Query';
+  users?: Maybe<Array<User>>;
+  viewer: Viewer;
+};
+
 export type UnknownMessage = Message & {
   __typename?: 'UnknownMessage';
+  subtype?: Maybe<Scalars['String']>;
   text: Scalars['String'];
   ts: Scalars['String'];
   type: Scalars['String'];
@@ -99,6 +119,15 @@ export type User = {
   updated?: Maybe<Scalars['Int']>;
 };
 
+export type UserMessage = Message & {
+  __typename?: 'UserMessage';
+  text: Scalars['String'];
+  ts: Scalars['String'];
+  type: Scalars['String'];
+  user: Scalars['String'];
+  user_profile: UserProfile;
+};
+
 export type UserProfile = {
   __typename?: 'UserProfile';
   avatar_hash?: Maybe<Scalars['String']>;
@@ -110,6 +139,7 @@ export type UserProfile = {
   image_192?: Maybe<Scalars['String']>;
   image_512?: Maybe<Scalars['String']>;
   image_original?: Maybe<Scalars['String']>;
+  is_restricted?: Maybe<Scalars['Boolean']>;
   real_name?: Maybe<Scalars['String']>;
   real_name_normalized?: Maybe<Scalars['String']>;
   status_emoji?: Maybe<Scalars['String']>;
@@ -200,6 +230,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  BotIcon: ResolverTypeWrapper<BotIcon>;
+  BotMessage: ResolverTypeWrapper<BotMessage>;
   Channel: ResolverTypeWrapper<Channel>;
   ChannelMessagesConnection: ResolverTypeWrapper<ChannelMessagesConnection>;
   ChannelMessagesEdge: ResolverTypeWrapper<ChannelMessagesEdge>;
@@ -207,12 +239,13 @@ export type ResolversTypes = ResolversObject<{
   ChannelTopic: ResolverTypeWrapper<ChannelTopic>;
   ChannelsConnection: ResolverTypeWrapper<ChannelsConnection>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
-  Message: ResolversTypes['TextMessage'] | ResolversTypes['UnknownMessage'];
+  JoinMessage: ResolverTypeWrapper<JoinMessage>;
+  Message: ResolversTypes['BotMessage'] | ResolversTypes['JoinMessage'] | ResolversTypes['UnknownMessage'] | ResolversTypes['UserMessage'];
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
-  TextMessage: ResolverTypeWrapper<TextMessage>;
   UnknownMessage: ResolverTypeWrapper<UnknownMessage>;
   User: ResolverTypeWrapper<User>;
+  UserMessage: ResolverTypeWrapper<UserMessage>;
   UserProfile: ResolverTypeWrapper<UserProfile>;
   Viewer: ResolverTypeWrapper<Viewer>;
 }>;
@@ -220,6 +253,8 @@ export type ResolversTypes = ResolversObject<{
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Boolean: Scalars['Boolean'];
+  BotIcon: BotIcon;
+  BotMessage: BotMessage;
   Channel: Channel;
   ChannelMessagesConnection: ChannelMessagesConnection;
   ChannelMessagesEdge: ChannelMessagesEdge;
@@ -227,14 +262,32 @@ export type ResolversParentTypes = ResolversObject<{
   ChannelTopic: ChannelTopic;
   ChannelsConnection: ChannelsConnection;
   Int: Scalars['Int'];
-  Message: ResolversParentTypes['TextMessage'] | ResolversParentTypes['UnknownMessage'];
+  JoinMessage: JoinMessage;
+  Message: ResolversParentTypes['BotMessage'] | ResolversParentTypes['JoinMessage'] | ResolversParentTypes['UnknownMessage'] | ResolversParentTypes['UserMessage'];
   Query: {};
   String: Scalars['String'];
-  TextMessage: TextMessage;
   UnknownMessage: UnknownMessage;
   User: User;
+  UserMessage: UserMessage;
   UserProfile: UserProfile;
   Viewer: Viewer;
+}>;
+
+export type BotIconResolvers<ContextType = any, ParentType extends ResolversParentTypes['BotIcon'] = ResolversParentTypes['BotIcon']> = ResolversObject<{
+  image_36?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  image_48?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  image_72?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type BotMessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['BotMessage'] = ResolversParentTypes['BotMessage']> = ResolversObject<{
+  icons?: Resolver<ResolversTypes['BotIcon'], ParentType, ContextType>;
+  subtype?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type ChannelResolvers<ContextType = any, ParentType extends ResolversParentTypes['Channel'] = ResolversParentTypes['Channel']> = ResolversObject<{
@@ -244,7 +297,7 @@ export type ChannelResolvers<ContextType = any, ParentType extends ResolversPare
   is_archived?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   is_general?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   members?: Resolver<Maybe<Array<ResolversTypes['User']>>, ParentType, ContextType>;
-  messages?: Resolver<ResolversTypes['ChannelMessagesConnection'], ParentType, ContextType, RequireFields<ChannelMessagesArgs, 'date'>>;
+  messages?: Resolver<Maybe<ResolversTypes['ChannelMessagesConnection']>, ParentType, ContextType, RequireFields<ChannelMessagesArgs, 'date'>>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   purpose?: Resolver<ResolversTypes['ChannelPurpose'], ParentType, ContextType>;
   topic?: Resolver<ResolversTypes['ChannelTopic'], ParentType, ContextType>;
@@ -281,18 +334,8 @@ export type ChannelsConnectionResolvers<ContextType = any, ParentType extends Re
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type MessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = ResolversObject<{
-  __resolveType: TypeResolveFn<'TextMessage' | 'UnknownMessage', ParentType, ContextType>;
-  ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-}>;
-
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
-  viewer?: Resolver<ResolversTypes['Viewer'], ParentType, ContextType>;
-}>;
-
-export type TextMessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['TextMessage'] = ResolversParentTypes['TextMessage']> = ResolversObject<{
+export type JoinMessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['JoinMessage'] = ResolversParentTypes['JoinMessage']> = ResolversObject<{
+  subtype?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -300,7 +343,20 @@ export type TextMessageResolvers<ContextType = any, ParentType extends Resolvers
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type MessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = ResolversObject<{
+  __resolveType: TypeResolveFn<'BotMessage' | 'JoinMessage' | 'UnknownMessage' | 'UserMessage', ParentType, ContextType>;
+  text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+}>;
+
+export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  users?: Resolver<Maybe<Array<ResolversTypes['User']>>, ParentType, ContextType>;
+  viewer?: Resolver<ResolversTypes['Viewer'], ParentType, ContextType>;
+}>;
+
 export type UnknownMessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['UnknownMessage'] = ResolversParentTypes['UnknownMessage']> = ResolversObject<{
+  subtype?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -317,6 +373,15 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type UserMessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserMessage'] = ResolversParentTypes['UserMessage']> = ResolversObject<{
+  text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user_profile?: Resolver<ResolversTypes['UserProfile'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type UserProfileResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserProfile'] = ResolversParentTypes['UserProfile']> = ResolversObject<{
   avatar_hash?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   display_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -327,6 +392,7 @@ export type UserProfileResolvers<ContextType = any, ParentType extends Resolvers
   image_192?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   image_512?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   image_original?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  is_restricted?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   real_name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   real_name_normalized?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   status_emoji?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -343,17 +409,20 @@ export type ViewerResolvers<ContextType = any, ParentType extends ResolversParen
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
+  BotIcon?: BotIconResolvers<ContextType>;
+  BotMessage?: BotMessageResolvers<ContextType>;
   Channel?: ChannelResolvers<ContextType>;
   ChannelMessagesConnection?: ChannelMessagesConnectionResolvers<ContextType>;
   ChannelMessagesEdge?: ChannelMessagesEdgeResolvers<ContextType>;
   ChannelPurpose?: ChannelPurposeResolvers<ContextType>;
   ChannelTopic?: ChannelTopicResolvers<ContextType>;
   ChannelsConnection?: ChannelsConnectionResolvers<ContextType>;
+  JoinMessage?: JoinMessageResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  TextMessage?: TextMessageResolvers<ContextType>;
   UnknownMessage?: UnknownMessageResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  UserMessage?: UserMessageResolvers<ContextType>;
   UserProfile?: UserProfileResolvers<ContextType>;
   Viewer?: ViewerResolvers<ContextType>;
 }>;

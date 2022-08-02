@@ -10,17 +10,19 @@ import Collapse from '@mui/material/Collapse'
 import ExpandLess from '@mui/icons-material/ExpandLess'
 import ExpandMore from '@mui/icons-material/ExpandMore'
 
+import Calender from './Calender'
 import ChannelList from './ChannelList'
-import { LocalizationProvider, StaticDatePicker } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import TextField from '@mui/material/TextField'
-import ArchiveList from '@/components/layouts/sidebar/ArchiveList'
+import ArchiveList from './ArchiveList'
+import { useChannelViewMutators, useChannelViewState } from '@/stores/view'
+import ListSkeleton from '@/components/ui/ListSkeleton'
 
 export interface SidebarProps {}
 
 const Sidebar: React.FC<SidebarProps> = () => {
   const [open, setOpen] = React.useState(true)
   const [openArchive, setOpenArchive] = React.useState(true)
+  const { date } = useChannelViewState()
+  const { setDate } = useChannelViewMutators()
 
   const handleClick = () => {
     setOpen(!open)
@@ -28,22 +30,6 @@ const Sidebar: React.FC<SidebarProps> = () => {
 
   const handleClickArchive = () => {
     setOpenArchive(!openArchive)
-  }
-
-  const [startDate, setStartDate] = React.useState<Date | undefined>(new Date())
-  const [endDate, setEndDate] = React.useState<Date | undefined>()
-
-  const [value, setValue] = React.useState<Date | null>(new Date())
-
-  const handleDateChange = (
-    newValue: Date | null,
-    dateType: 'start' | 'end'
-  ) => {
-    if (dateType == 'start') {
-      setStartDate(newValue ?? undefined)
-    } else {
-      setEndDate(newValue ?? undefined)
-    }
   }
 
   return (
@@ -59,17 +45,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
         </Typography>
       </Toolbar>
       <Divider />
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <StaticDatePicker
-          displayStaticWrapperAs="desktop"
-          openTo="day"
-          value={value}
-          onChange={(newValue) => {
-            setValue(newValue)
-          }}
-          renderInput={(params) => <TextField {...params} />}
-        />
-      </LocalizationProvider>
+      <Calender date={date} setDate={setDate} />
       <Divider />
       <List dense>
         <ListItemButton onClick={handleClick}>
@@ -77,7 +53,7 @@ const Sidebar: React.FC<SidebarProps> = () => {
           {open ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
         <Collapse in={open}>
-          <React.Suspense fallback={<p>Loading...</p>}>
+          <React.Suspense fallback={<ListSkeleton bars={3} />}>
             <ChannelList />
           </React.Suspense>
         </Collapse>

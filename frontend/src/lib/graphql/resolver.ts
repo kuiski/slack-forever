@@ -45,19 +45,26 @@ export const resolvers: Resolvers<ApolloContext> = {
     },
 
     messages: async (parent, args, { slackLog }) => {
+      const messages =
+        (await slackLog.getChannelMessages(parent.name, args.date)) ?? []
       return {
-        edges:
-          (await slackLog.getChannelMessages(parent.name, args.date)) ?? [],
+        edges: messages.filter((message) => message.type === 'message'),
       } as any
     },
   },
 
   Message: {
     __resolveType: (obj, _context, _info) => {
-      if (obj.type === 'message' && !('subtype' in obj)) {
-        return 'TextMessage'
+      // Not implemented message type
+      if (obj.type !== 'message') return 'UnknownMessage'
+
+      if (!obj.subtype) {
+        return 'UserMessage'
       }
-      return 'UnknownMessage'
+
+      if (obj.subtype === 'bot_message') return 'BotMessage'
+      else if (obj.subtype === 'channel_join') return 'JoinMessage'
+      else return 'UnknownMessage'
     },
   },
 }

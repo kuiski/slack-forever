@@ -1,5 +1,6 @@
 import React from 'react'
 import { GetServerSideProps, NextPage } from 'next'
+import { signIn } from 'next-auth/react'
 import Home from '@/components/pages/home/Home'
 
 interface PageProps {

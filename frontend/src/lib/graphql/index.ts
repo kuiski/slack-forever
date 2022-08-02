@@ -1,5 +1,6 @@
-import { makeContext } from "./context";
-import { resolvers } from "./resolver";
-import { typeDefs } from "./schema";
+import { makeContext } from './context'
+import { resolvers } from './resolver'
+// @ts-ignore
+import { typeDefs } from './__generated__/typeDefs'
 
-export { makeContext, resolvers, typeDefs };
+export { makeContext, resolvers, typeDefs }

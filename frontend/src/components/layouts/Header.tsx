@@ -8,8 +8,10 @@ import InputBase from '@mui/material/InputBase'
 import MenuItem from '@mui/material/MenuItem'
 import Menu from '@mui/material/Menu'
 import MenuIcon from '@mui/icons-material/Menu'
+import Avatar from '@mui/material/Avatar'
 import SearchIcon from '@mui/icons-material/Search'
 import AccountCircle from '@mui/icons-material/AccountCircle'
+import { useSession, signOut } from 'next-auth/react'
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -57,6 +59,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ toggleDrawer, drawerWidth }) => {
+  const session = useSession()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
 
   const isMenuOpen = Boolean(anchorEl)
@@ -66,6 +69,11 @@ const Header: React.FC<HeaderProps> = ({ toggleDrawer, drawerWidth }) => {
   }
 
   const handleMenuClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: '/' })
     setAnchorEl(null)
   }
 
@@ -86,8 +94,7 @@ const Header: React.FC<HeaderProps> = ({ toggleDrawer, drawerWidth }) => {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleSignOut}>ログアウト</MenuItem>
     </Menu>
   )
 
@@ -121,19 +128,25 @@ const Header: React.FC<HeaderProps> = ({ toggleDrawer, drawerWidth }) => {
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </Box>
+          {session.status == 'loading' && <AccountCircle />}
+          {session.status == 'authenticated' && (
+            <Box>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <Avatar
+                  alt={session.data.user.name ?? undefined}
+                  src={session.data.user.image ?? undefined}
+                />
+              </IconButton>
+            </Box>
+          )}
         </Toolbar>
       </AppBar>
       {renderProfileMenu}

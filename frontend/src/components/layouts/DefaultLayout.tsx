@@ -14,7 +14,7 @@ interface LayoutProps {
 
 export default function DefaultLayout({ children }: LayoutProps) {
   const [mobileOpen, setMobileOpen] = React.useState(false)
-  const drawerWidth = 320
+  const drawerWidth = 340
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
@@ -65,7 +65,6 @@ export default function DefaultLayout({ children }: LayoutProps) {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
           width: { sm: `calc(100% - ${drawerWidth}px)` },
         }}
       >

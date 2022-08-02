@@ -5,17 +5,14 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 
-import {
-  useSlackChannelMutators,
-  useSlackChannelState,
-} from '@/stores/channels'
-import { useChannelList } from '@/stores/channelList'
+import { useChannelViewMutators, useChannelViewState } from '@/stores/view'
+import { useChannels } from '@/stores/channels'
 
 const ChannelList: React.FC = () => {
-  const slackChannels = useSlackChannelState()
-  const channels = useChannelList()
+  const slackChannels = useChannelViewState()
+  const channels = useChannels()
 
-  const { selectChannel, toggleSelectChannel } = useSlackChannelMutators()
+  const { selectChannel, toggleSelectChannel } = useChannelViewMutators()
 
   const onClickChannel = (
     e: React.MouseEvent<HTMLElement>,
