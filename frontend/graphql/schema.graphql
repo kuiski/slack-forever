@@ -82,6 +82,30 @@ type UserMessage implements Message {
   user_profile: UserProfile!
 }
 
+type UploadMessage implements Message {
+  type: String!
+  ts: String!
+  text: String!
+  user: String!
+  files: [UploadFileInfo!]
+}
+
+type UploadFileInfo {
+  id: String!
+  name: String!
+  url_private: String
+  permalink: String
+  thumb_360: String
+  thumb_360_w: String
+  thumb_360_h: String
+  thumb_480: String
+  thumb_480_w: String
+  thumb_480_h: String
+  thumb_720: String
+  thumb_720_w: String
+  thumb_720_h: String
+}
+
 type BotIcon {
   image_36: String
   image_48: String

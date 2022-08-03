@@ -4,7 +4,7 @@ import { signIn, signOut, useSession } from 'next-auth/react'
 import DefaultLayout from '@/components/layouts/DefaultLayout'
 import { NoSsr } from '@mui/material'
 import React from 'react'
-import ChannelMessageContainer from '@/components/models/channel/ChannelMessageContainer'
+import ChannelMessageContainer from '@/components/ui/channel/ChannelMessageContainer'
 import ErrorBoundary from '@/components/hoc/ErrorBoundary'
 
 const Home: React.FC<{}> = (props) => {

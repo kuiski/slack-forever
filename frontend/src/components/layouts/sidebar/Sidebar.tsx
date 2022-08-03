@@ -14,7 +14,7 @@ import Calender from './Calender'
 import ChannelList from './ChannelList'
 import ArchiveList from './ArchiveList'
 import { useChannelViewMutators, useChannelViewState } from '@/stores/view'
-import ListSkeleton from '@/components/ui/ListSkeleton'
+import ListSkeleton from '@/components/elements/ListSkeleton'
 
 export interface SidebarProps {}
 

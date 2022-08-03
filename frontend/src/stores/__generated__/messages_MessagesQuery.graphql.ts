@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<61c5b23ab32dfa916caec63b8689287f>>
+ * @generated SignedSource<<d5d77d8e2cff075abe5e7a5fbb9b0be9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,6 +21,21 @@ export type messages_MessagesQuery$data = {
         readonly messages: {
           readonly edges: ReadonlyArray<{
             readonly __typename: string;
+            readonly files?: ReadonlyArray<{
+              readonly id: string;
+              readonly name: string;
+              readonly permalink: string | null;
+              readonly thumb_360: string | null;
+              readonly thumb_360_h: string | null;
+              readonly thumb_360_w: string | null;
+              readonly thumb_480: string | null;
+              readonly thumb_480_h: string | null;
+              readonly thumb_480_w: string | null;
+              readonly thumb_720: string | null;
+              readonly thumb_720_h: string | null;
+              readonly thumb_720_w: string | null;
+              readonly url_private: string | null;
+            }> | null;
             readonly text?: string;
             readonly ts: string;
             readonly type: string;
@@ -56,17 +71,31 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "user",
+  "name": "id",
   "storageKey": null
 },
 v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "user",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "text",
   "storageKey": null
 },
-v4 = [
+v6 = [
   {
     "alias": null,
     "args": null,
@@ -97,20 +126,8 @@ v4 = [
             "name": "nodes",
             "plural": true,
             "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "id",
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "name",
-                "storageKey": null
-              },
+              (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": [
@@ -157,8 +174,8 @@ v4 = [
                       {
                         "kind": "InlineFragment",
                         "selections": [
-                          (v2/*: any*/),
-                          (v3/*: any*/),
+                          (v4/*: any*/),
+                          (v5/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -191,10 +208,109 @@ v4 = [
                       {
                         "kind": "InlineFragment",
                         "selections": [
-                          (v2/*: any*/),
-                          (v3/*: any*/)
+                          (v4/*: any*/),
+                          (v5/*: any*/)
                         ],
                         "type": "JoinMessage",
+                        "abstractKey": null
+                      },
+                      {
+                        "kind": "InlineFragment",
+                        "selections": [
+                          (v4/*: any*/),
+                          (v5/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "UploadFile",
+                            "kind": "LinkedField",
+                            "name": "files",
+                            "plural": true,
+                            "selections": [
+                              (v2/*: any*/),
+                              (v3/*: any*/),
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "permalink",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "url_private",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "thumb_360",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "thumb_360_h",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "thumb_360_w",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "thumb_480",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "thumb_480_h",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "thumb_480_w",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "thumb_720",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "thumb_720_h",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "thumb_720_w",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "type": "UploadMessage",
                         "abstractKey": null
                       }
                     ],
@@ -222,7 +338,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "messages_MessagesQuery",
-    "selections": (v4/*: any*/),
+    "selections": (v6/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -234,19 +350,19 @@ return {
     ],
     "kind": "Operation",
     "name": "messages_MessagesQuery",
-    "selections": (v4/*: any*/)
+    "selections": (v6/*: any*/)
   },
   "params": {
-    "cacheID": "365ca38e20db720f57476bbe6f976dec",
+    "cacheID": "61ceb446f6b9911f7b3b6a852375ecbe",
     "id": null,
     "metadata": {},
     "name": "messages_MessagesQuery",
     "operationKind": "query",
-    "text": "query messages_MessagesQuery(\n  $names: [String!]\n  $date: String!\n) {\n  viewer {\n    channels(names: $names) {\n      nodes {\n        id\n        name\n        messages(date: $date) {\n          edges {\n            __typename\n            type\n            ts\n            ... on UserMessage {\n              user\n              text\n              user_profile {\n                display_name\n                image_72\n              }\n            }\n            ... on JoinMessage {\n              user\n              text\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query messages_MessagesQuery(\n  $names: [String!]\n  $date: String!\n) {\n  viewer {\n    channels(names: $names) {\n      nodes {\n        id\n        name\n        messages(date: $date) {\n          edges {\n            __typename\n            type\n            ts\n            ... on UserMessage {\n              user\n              text\n              user_profile {\n                display_name\n                image_72\n              }\n            }\n            ... on JoinMessage {\n              user\n              text\n            }\n            ... on UploadMessage {\n              user\n              text\n              files {\n                id\n                name\n                permalink\n                url_private\n                thumb_360\n                thumb_360_h\n                thumb_360_w\n                thumb_480\n                thumb_480_h\n                thumb_480_w\n                thumb_720\n                thumb_720_h\n                thumb_720_w\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "d6a8430efb090a622530026f09aea599";
+(node as any).hash = "3115b03a9a5a6d6a3059c2271a80e559";
 
 export default node;

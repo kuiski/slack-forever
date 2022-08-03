@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import { useChannelViewState } from '@/stores/view'
 import { useMessages } from '@/stores/messages'
 import Typography from '@mui/material/Typography'
-import { MessageContainer } from '@/components/models/message/Message'
+import { MessageContainer } from '@/components/ui/message/Message'
 
 const ChannelMessageContainer: React.FC = () => {
   const { selected, date } = useChannelViewState()

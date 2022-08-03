@@ -43,6 +43,25 @@ export const MessagesQuery = graphQLSelector({
                   user
                   text
                 }
+                ... on UploadMessage {
+                  user
+                  text
+                  files {
+                    id
+                    name
+                    permalink
+                    url_private
+                    thumb_360
+                    thumb_360_h
+                    thumb_360_w
+                    thumb_480
+                    thumb_480_h
+                    thumb_480_w
+                    thumb_720
+                    thumb_720_h
+                    thumb_720_w
+                  }
+                }
               }
             }
           }

@@ -6,7 +6,9 @@ import Grid from '@mui/material/Grid'
 import Stack from '@mui/material/Stack'
 
 import {
-  JoinChannel,
+  getThumbnail,
+  JoinMessage,
+  UploadMessage,
   Message,
   UserMessage,
 } from '@/entities/queries/cnannelMessage'
@@ -35,8 +37,10 @@ export const MessageContainer: React.FC<{ messages: Message[] }> = ({
 export const MessageItem: React.FC<{ message: Message }> = ({ message }) => {
   if (message.__typename === 'UserMessage')
     return <UserMessageItem message={message} />
-  else if (message.__typename === 'JoinChannel')
-    return <JoinChannelItem message={message} />
+  else if (message.__typename === 'JoinMessage')
+    return <JoinMessageItem message={message} />
+  else if (message.__typename === 'UploadMessage')
+    return <UploadMessageItem message={message} />
   else return <UnknownMessageItem message={message} />
 }
 
@@ -68,13 +72,39 @@ export const UserMessageItem: React.FC<{ message: UserMessage }> = ({
   )
 }
 
-export const JoinChannelItem: React.FC<{ message: JoinChannel }> = ({
+export const JoinMessageItem: React.FC<{ message: JoinMessage }> = ({
   message,
 }) => {
   return (
     <div>
       <div>{message.ts}</div>
       <div>{message.text}</div>
+    </div>
+  )
+}
+
+export const UploadMessageItem: React.FC<{ message: UploadMessage }> = ({
+  message,
+}) => {
+  return (
+    <div>
+      <div>{ts(message.ts)}</div>
+      <div>{message.text}</div>
+      {message.files.map((file) => {
+        const thumb = getThumbnail(file)
+        if (!thumb) {
+          return null
+        }
+
+        return (
+          <div key={file.id}>
+            <a href={file.url_private} target="_blank" rel="noreferrer">
+              <img src={thumb.thumb} />
+            </a>
+          </div>
+        )
+      })}
+      <div></div>
     </div>
   )
 }

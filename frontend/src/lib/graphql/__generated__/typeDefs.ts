@@ -84,6 +84,30 @@ type UnknownMessage implements Message {
   type: String!
 }
 
+type UploadFileInfo {
+  id: String!
+  name: String!
+  permalink: String
+  thumb_360: String
+  thumb_360_h: String
+  thumb_360_w: String
+  thumb_480: String
+  thumb_480_h: String
+  thumb_480_w: String
+  thumb_720: String
+  thumb_720_h: String
+  thumb_720_w: String
+  url_private: String
+}
+
+type UploadMessage implements Message {
+  files: [UploadFileInfo!]
+  text: String!
+  ts: String!
+  type: String!
+  user: String!
+}
+
 type User {
   deleted: Boolean
   id: String

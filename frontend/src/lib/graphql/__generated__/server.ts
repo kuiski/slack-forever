@@ -109,6 +109,32 @@ export type UnknownMessage = Message & {
   type: Scalars['String'];
 };
 
+export type UploadFileInfo = {
+  __typename?: 'UploadFileInfo';
+  id: Scalars['String'];
+  name: Scalars['String'];
+  permalink?: Maybe<Scalars['String']>;
+  thumb_360?: Maybe<Scalars['String']>;
+  thumb_360_h?: Maybe<Scalars['String']>;
+  thumb_360_w?: Maybe<Scalars['String']>;
+  thumb_480?: Maybe<Scalars['String']>;
+  thumb_480_h?: Maybe<Scalars['String']>;
+  thumb_480_w?: Maybe<Scalars['String']>;
+  thumb_720?: Maybe<Scalars['String']>;
+  thumb_720_h?: Maybe<Scalars['String']>;
+  thumb_720_w?: Maybe<Scalars['String']>;
+  url_private?: Maybe<Scalars['String']>;
+};
+
+export type UploadMessage = Message & {
+  __typename?: 'UploadMessage';
+  files?: Maybe<Array<UploadFileInfo>>;
+  text: Scalars['String'];
+  ts: Scalars['String'];
+  type: Scalars['String'];
+  user: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
   deleted?: Maybe<Scalars['Boolean']>;
@@ -240,10 +266,12 @@ export type ResolversTypes = ResolversObject<{
   ChannelsConnection: ResolverTypeWrapper<ChannelsConnection>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   JoinMessage: ResolverTypeWrapper<JoinMessage>;
-  Message: ResolversTypes['BotMessage'] | ResolversTypes['JoinMessage'] | ResolversTypes['UnknownMessage'] | ResolversTypes['UserMessage'];
+  Message: ResolversTypes['BotMessage'] | ResolversTypes['JoinMessage'] | ResolversTypes['UnknownMessage'] | ResolversTypes['UploadMessage'] | ResolversTypes['UserMessage'];
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
   UnknownMessage: ResolverTypeWrapper<UnknownMessage>;
+  UploadFileInfo: ResolverTypeWrapper<UploadFileInfo>;
+  UploadMessage: ResolverTypeWrapper<UploadMessage>;
   User: ResolverTypeWrapper<User>;
   UserMessage: ResolverTypeWrapper<UserMessage>;
   UserProfile: ResolverTypeWrapper<UserProfile>;
@@ -263,10 +291,12 @@ export type ResolversParentTypes = ResolversObject<{
   ChannelsConnection: ChannelsConnection;
   Int: Scalars['Int'];
   JoinMessage: JoinMessage;
-  Message: ResolversParentTypes['BotMessage'] | ResolversParentTypes['JoinMessage'] | ResolversParentTypes['UnknownMessage'] | ResolversParentTypes['UserMessage'];
+  Message: ResolversParentTypes['BotMessage'] | ResolversParentTypes['JoinMessage'] | ResolversParentTypes['UnknownMessage'] | ResolversParentTypes['UploadMessage'] | ResolversParentTypes['UserMessage'];
   Query: {};
   String: Scalars['String'];
   UnknownMessage: UnknownMessage;
+  UploadFileInfo: UploadFileInfo;
+  UploadMessage: UploadMessage;
   User: User;
   UserMessage: UserMessage;
   UserProfile: UserProfile;
@@ -344,7 +374,7 @@ export type JoinMessageResolvers<ContextType = any, ParentType extends Resolvers
 }>;
 
 export type MessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = ResolversObject<{
-  __resolveType: TypeResolveFn<'BotMessage' | 'JoinMessage' | 'UnknownMessage' | 'UserMessage', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'BotMessage' | 'JoinMessage' | 'UnknownMessage' | 'UploadMessage' | 'UserMessage', ParentType, ContextType>;
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -360,6 +390,32 @@ export type UnknownMessageResolvers<ContextType = any, ParentType extends Resolv
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type UploadFileInfoResolvers<ContextType = any, ParentType extends ResolversParentTypes['UploadFileInfo'] = ResolversParentTypes['UploadFileInfo']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  permalink?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  thumb_360?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  thumb_360_h?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  thumb_360_w?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  thumb_480?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  thumb_480_h?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  thumb_480_w?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  thumb_720?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  thumb_720_h?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  thumb_720_w?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  url_private?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type UploadMessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['UploadMessage'] = ResolversParentTypes['UploadMessage']> = ResolversObject<{
+  files?: Resolver<Maybe<Array<ResolversTypes['UploadFileInfo']>>, ParentType, ContextType>;
+  text?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -421,6 +477,8 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Message?: MessageResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   UnknownMessage?: UnknownMessageResolvers<ContextType>;
+  UploadFileInfo?: UploadFileInfoResolvers<ContextType>;
+  UploadMessage?: UploadMessageResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserMessage?: UserMessageResolvers<ContextType>;
   UserProfile?: UserProfileResolvers<ContextType>;

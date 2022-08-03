@@ -9,7 +9,7 @@ export interface JoinMessage {
   text: string
 }
 
-export interface TextMessage {
+export interface UserMessage {
   type: 'message'
   text: string
   user_profile: {
@@ -40,4 +40,4 @@ export interface Attachment {
   thumb_height: number
 }
 
-export type Message = MessageBase & (JoinMessage | TextMessage | UnknownMessage)
+export type Message = MessageBase & (JoinMessage | UserMessage | UnknownMessage)
