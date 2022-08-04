@@ -72,6 +72,7 @@ type JoinMessage implements Message {
   ts: String!
   text: String!
   user: String!
+  user_profile: UserProfile
 }
 
 type UserMessage implements Message {
@@ -79,7 +80,7 @@ type UserMessage implements Message {
   ts: String!
   text: String!
   user: String!
-  user_profile: UserProfile!
+  user_profile: UserProfile
 }
 
 type UploadMessage implements Message {
@@ -88,6 +89,7 @@ type UploadMessage implements Message {
   text: String!
   user: String!
   files: [UploadFileInfo!]
+  user_profile: UserProfile
 }
 
 type UploadFileInfo {

@@ -1,13 +1,33 @@
+import React from 'react'
 import Head from 'next/head'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { NoSsr } from '@mui/material'
+
+import { useRouter } from 'next/router'
+import { useChannelViewState } from '@/stores/view'
 
 import DefaultLayout from '@/components/layouts/DefaultLayout'
-import { NoSsr } from '@mui/material'
-import React from 'react'
 import ChannelMessageContainer from '@/components/ui/channel/ChannelMessageContainer'
 import ErrorBoundary from '@/components/hoc/ErrorBoundary'
 
 const Home: React.FC<{}> = (props) => {
+  const router = useRouter()
+  const viewState = useChannelViewState()
+
+  React.useEffect(() => {
+    if (viewState.date && viewState.selected.length > 0) {
+      const date = viewState.date || ''
+      const ch = viewState.selected.join(',')
+      router
+        .replace(
+          `/?date=${encodeURIComponent(date)}&ch=${encodeURIComponent(ch)}`,
+          undefined,
+          { shallow: true }
+        )
+        .then(() => {})
+        .catch(console.error)
+    }
+  }, [viewState, router])
+
   return (
     <DefaultLayout>
       <Head>

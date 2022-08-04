@@ -87,6 +87,7 @@ export type JoinMessage = Message & {
   ts: Scalars['String'];
   type: Scalars['String'];
   user: Scalars['String'];
+  user_profile?: Maybe<UserProfile>;
 };
 
 export type Message = {
@@ -133,6 +134,7 @@ export type UploadMessage = Message & {
   ts: Scalars['String'];
   type: Scalars['String'];
   user: Scalars['String'];
+  user_profile?: Maybe<UserProfile>;
 };
 
 export type User = {
@@ -151,7 +153,7 @@ export type UserMessage = Message & {
   ts: Scalars['String'];
   type: Scalars['String'];
   user: Scalars['String'];
-  user_profile: UserProfile;
+  user_profile?: Maybe<UserProfile>;
 };
 
 export type UserProfile = {
@@ -370,6 +372,7 @@ export type JoinMessageResolvers<ContextType = any, ParentType extends Resolvers
   ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user_profile?: Resolver<Maybe<ResolversTypes['UserProfile']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -416,6 +419,7 @@ export type UploadMessageResolvers<ContextType = any, ParentType extends Resolve
   ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  user_profile?: Resolver<Maybe<ResolversTypes['UserProfile']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -434,7 +438,7 @@ export type UserMessageResolvers<ContextType = any, ParentType extends Resolvers
   ts?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   user?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  user_profile?: Resolver<ResolversTypes['UserProfile'], ParentType, ContextType>;
+  user_profile?: Resolver<Maybe<ResolversTypes['UserProfile']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

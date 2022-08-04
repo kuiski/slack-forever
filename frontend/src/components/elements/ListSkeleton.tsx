@@ -10,7 +10,7 @@ const ListSkeleton: React.FC<ListSkeletonProps> = ({ bars }) => {
   const arr = [...Array(count)]
   return (
     <>
-      {arr.map((n) => (
+      {arr.map((_, n) => (
         <Skeleton key={n} />
       ))}
     </>

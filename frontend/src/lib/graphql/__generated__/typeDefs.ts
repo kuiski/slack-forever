@@ -64,6 +64,7 @@ type JoinMessage implements Message {
   ts: String!
   type: String!
   user: String!
+  user_profile: UserProfile
 }
 
 interface Message {
@@ -106,6 +107,7 @@ type UploadMessage implements Message {
   ts: String!
   type: String!
   user: String!
+  user_profile: UserProfile
 }
 
 type User {
@@ -122,7 +124,7 @@ type UserMessage implements Message {
   ts: String!
   type: String!
   user: String!
-  user_profile: UserProfile!
+  user_profile: UserProfile
 }
 
 type UserProfile {

@@ -1,5 +1,6 @@
 import { Bucket, Storage } from '@google-cloud/storage'
 import DataLoader from 'dataloader'
+import dayjs from 'dayjs'
 import { Channel, ChannelSchema } from '@/entities/channel'
 import { User, UserSchema } from '@/entities/user'
 import { Message } from '@/entities/message'
@@ -98,11 +99,27 @@ export class CloudStorageDatasource extends SlackLogDatasource {
     return JSON.parse(contents.toString())
   }
 
+  async _addUserProfile(message: Message) {
+    if ('user' in message && !('user_profile' in message)) {
+      const user = await this.userLoader.load(message.user)
+      if (!user) return message
+
+      return {
+        ...message,
+        user_profile: user.profile,
+      }
+    }
+
+    return message
+  }
+
   async _fetchMessages(channelId: string, date: string): Promise<Message[]> {
-    const objPath = `slack_export/${channelId}/${date}.json` // Need escape
+    const dateFormat = dayjs(date).format('YYYY-MM-DD')
+    const objPath = `slack_export/${channelId}/${dateFormat}.json` // Need escape
     try {
       const contents = await this.bucket.file(objPath).download()
-      return JSON.parse(contents.toString())
+      const messages = JSON.parse(contents.toString())
+      return await Promise.all(messages.map(this._addUserProfile, this))
     } catch (err: any) {
       if (err.code === 404) return []
       else throw err

@@ -59,7 +59,8 @@ export const resolvers: Resolvers<ApolloContext> = {
       if (obj.type !== 'message') return 'UnknownMessage'
 
       if (!('subtype' in obj)) {
-        if (!('user_profile' in obj) && 'files' in obj) return 'UploadMessage'
+        if ('files' in obj) return 'UploadMessage'
+        if (!('user' in obj)) return 'UnknownMessage'
         return 'UserMessage'
       }
 

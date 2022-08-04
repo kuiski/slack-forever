@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d5d77d8e2cff075abe5e7a5fbb9b0be9>>
+ * @generated SignedSource<<4e45bd129519a471f5dc66bed959eaae>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -43,7 +43,8 @@ export type messages_MessagesQuery$data = {
             readonly user_profile?: {
               readonly display_name: string | null;
               readonly image_72: string | null;
-            };
+              readonly real_name: string | null;
+            } | null;
           } | null> | null;
         } | null;
         readonly name: string;
@@ -95,7 +96,44 @@ v5 = {
   "name": "text",
   "storageKey": null
 },
-v6 = [
+v6 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "UserProfile",
+  "kind": "LinkedField",
+  "name": "user_profile",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "display_name",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "real_name",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "image_72",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+},
+v7 = [
+  (v4/*: any*/),
+  (v5/*: any*/),
+  (v6/*: any*/)
+],
+v8 = [
   {
     "alias": null,
     "args": null,
@@ -173,44 +211,13 @@ v6 = [
                       },
                       {
                         "kind": "InlineFragment",
-                        "selections": [
-                          (v4/*: any*/),
-                          (v5/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "UserProfile",
-                            "kind": "LinkedField",
-                            "name": "user_profile",
-                            "plural": false,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "display_name",
-                                "storageKey": null
-                              },
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "image_72",
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": null
-                          }
-                        ],
+                        "selections": (v7/*: any*/),
                         "type": "UserMessage",
                         "abstractKey": null
                       },
                       {
                         "kind": "InlineFragment",
-                        "selections": [
-                          (v4/*: any*/),
-                          (v5/*: any*/)
-                        ],
+                        "selections": (v7/*: any*/),
                         "type": "JoinMessage",
                         "abstractKey": null
                       },
@@ -219,10 +226,11 @@ v6 = [
                         "selections": [
                           (v4/*: any*/),
                           (v5/*: any*/),
+                          (v6/*: any*/),
                           {
                             "alias": null,
                             "args": null,
-                            "concreteType": "UploadFile",
+                            "concreteType": "UploadFileInfo",
                             "kind": "LinkedField",
                             "name": "files",
                             "plural": true,
@@ -338,7 +346,7 @@ return {
     "kind": "Fragment",
     "metadata": null,
     "name": "messages_MessagesQuery",
-    "selections": (v6/*: any*/),
+    "selections": (v8/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
@@ -350,19 +358,19 @@ return {
     ],
     "kind": "Operation",
     "name": "messages_MessagesQuery",
-    "selections": (v6/*: any*/)
+    "selections": (v8/*: any*/)
   },
   "params": {
-    "cacheID": "61ceb446f6b9911f7b3b6a852375ecbe",
+    "cacheID": "c04a7197a5ff0020a003d6c502b8f9ed",
     "id": null,
     "metadata": {},
     "name": "messages_MessagesQuery",
     "operationKind": "query",
-    "text": "query messages_MessagesQuery(\n  $names: [String!]\n  $date: String!\n) {\n  viewer {\n    channels(names: $names) {\n      nodes {\n        id\n        name\n        messages(date: $date) {\n          edges {\n            __typename\n            type\n            ts\n            ... on UserMessage {\n              user\n              text\n              user_profile {\n                display_name\n                image_72\n              }\n            }\n            ... on JoinMessage {\n              user\n              text\n            }\n            ... on UploadMessage {\n              user\n              text\n              files {\n                id\n                name\n                permalink\n                url_private\n                thumb_360\n                thumb_360_h\n                thumb_360_w\n                thumb_480\n                thumb_480_h\n                thumb_480_w\n                thumb_720\n                thumb_720_h\n                thumb_720_w\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query messages_MessagesQuery(\n  $names: [String!]\n  $date: String!\n) {\n  viewer {\n    channels(names: $names) {\n      nodes {\n        id\n        name\n        messages(date: $date) {\n          edges {\n            __typename\n            type\n            ts\n            ... on UserMessage {\n              user\n              text\n              user_profile {\n                display_name\n                real_name\n                image_72\n              }\n            }\n            ... on JoinMessage {\n              user\n              text\n              user_profile {\n                display_name\n                real_name\n                image_72\n              }\n            }\n            ... on UploadMessage {\n              user\n              text\n              user_profile {\n                display_name\n                real_name\n                image_72\n              }\n              files {\n                id\n                name\n                permalink\n                url_private\n                thumb_360\n                thumb_360_h\n                thumb_360_w\n                thumb_480\n                thumb_480_h\n                thumb_480_w\n                thumb_720\n                thumb_720_h\n                thumb_720_w\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "3115b03a9a5a6d6a3059c2271a80e559";
+(node as any).hash = "815502ed64c866d11fc86bf2081884c7";
 
 export default node;

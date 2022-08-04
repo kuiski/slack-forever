@@ -1,5 +1,5 @@
 import React from 'react'
-import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
+import { atom, AtomEffect, useRecoilValue, useSetRecoilState } from 'recoil'
 import dayjs from 'dayjs'
 
 interface ChannelViewState {
@@ -30,6 +30,16 @@ export const useChannelViewState = () => {
 
 export const useChannelViewMutators = () => {
   const setState = useSetRecoilState(channelViewState)
+
+  const setSelectChannel = React.useCallback(
+    (channelsNames: string[]) => {
+      setState((channelState) => ({
+        ...channelState,
+        selected: channelsNames,
+      }))
+    },
+    [setState]
+  )
 
   const selectChannel = React.useCallback(
     (channelName: string, selectMulti: boolean = false) =>
@@ -84,6 +94,7 @@ export const useChannelViewMutators = () => {
   )
 
   return {
+    setSelectChannel,
     selectChannel,
     toggleSelectChannel,
     setDate,

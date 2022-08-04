@@ -6,12 +6,19 @@ export interface ChannelMessage {
 
 export type Message = JoinMessage | UnknownMessage | UserMessage | UploadMessage
 
+export interface UserProfile {
+  display_name: string
+  real_name: string
+  image_72: string
+}
+
 export interface JoinMessage {
   __typename: 'JoinMessage'
   type: 'message'
   subtype: 'join_channel'
   ts: string
   user: string
+  user_profile?: UserProfile
   text: string
 }
 
@@ -22,10 +29,7 @@ export interface UserMessage {
   ts: string
   user: string
   text: string
-  user_profile: {
-    display_name: string
-    image_72: string
-  }
+  user_profile?: UserProfile
 }
 
 export interface UploadMessage {
@@ -33,6 +37,7 @@ export interface UploadMessage {
   type: 'message'
   ts: string
   user: string
+  user_profile?: UserProfile
   text: string
   files: UploadFileInfo[]
 }

@@ -36,16 +36,27 @@ export const MessagesQuery = graphQLSelector({
                   text
                   user_profile {
                     display_name
+                    real_name
                     image_72
                   }
                 }
                 ... on JoinMessage {
                   user
                   text
+                  user_profile {
+                    display_name
+                    real_name
+                    image_72
+                  }
                 }
                 ... on UploadMessage {
                   user
                   text
+                  user_profile {
+                    display_name
+                    real_name
+                    image_72
+                  }
                   files {
                     id
                     name

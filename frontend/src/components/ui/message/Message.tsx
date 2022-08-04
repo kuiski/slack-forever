@@ -11,8 +11,9 @@ import {
   UploadMessage,
   Message,
   UserMessage,
+  UserProfile,
 } from '@/entities/queries/cnannelMessage'
-import ts from '@/lib/helper/ts'
+import ts2s from '@/lib/helper/ts'
 import Typography from '@mui/material/Typography'
 
 export const MessageContainer: React.FC<{ messages: Message[] }> = ({
@@ -44,31 +45,46 @@ export const MessageItem: React.FC<{ message: Message }> = ({ message }) => {
   else return <UnknownMessageItem message={message} />
 }
 
-export const UserMessageItem: React.FC<{ message: UserMessage }> = ({
-  message,
+interface MessageItemBaseProps {
+  children: React.ReactNode
+  user_profile?: UserProfile
+  ts: string
+}
+
+export const MessageItemBase: React.FC<MessageItemBaseProps> = ({
+  children,
+  user_profile,
+  ts,
 }) => {
   return (
     <Grid container wrap="nowrap" sx={{ mt: 1 }}>
       <Grid item>
-        <Avatar
-          alt={message.user_profile.display_name}
-          src={message.user_profile.image_72}
-        />
+        <Avatar alt={user_profile?.display_name} src={user_profile?.image_72} />
       </Grid>
       <Grid container item direction="column" sx={{ ml: 1 }}>
         <Grid container item>
           <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-            {message.user_profile.display_name}
+            {user_profile?.display_name || user_profile?.real_name}
           </Typography>
           <Typography variant="body2" sx={{ ml: 1 }}>
-            {ts(message.ts)}
+            {ts2s(ts)}
           </Typography>
         </Grid>
         <Box sx={{ mt: 1 }}>
-          <Typography variant="body2">{message.text}</Typography>
+          <Typography variant="body2">{children}</Typography>
         </Box>
       </Grid>
     </Grid>
+  )
+}
+
+export const UserMessageItem: React.FC<{ message: UserMessage }> = ({
+  message,
+}) => {
+  return (
+    <MessageItemBase ts={message.ts} user_profile={message.user_profile}>
+      {message.text}
+    </MessageItemBase>
   )
 }
 
@@ -76,10 +92,9 @@ export const JoinMessageItem: React.FC<{ message: JoinMessage }> = ({
   message,
 }) => {
   return (
-    <div>
-      <div>{message.ts}</div>
-      <div>{message.text}</div>
-    </div>
+    <MessageItemBase ts={message.ts} user_profile={message.user_profile}>
+      {message.text}
+    </MessageItemBase>
   )
 }
 
@@ -87,9 +102,8 @@ export const UploadMessageItem: React.FC<{ message: UploadMessage }> = ({
   message,
 }) => {
   return (
-    <div>
-      <div>{ts(message.ts)}</div>
-      <div>{message.text}</div>
+    <MessageItemBase ts={message.ts} user_profile={message.user_profile}>
+      {message.text}
       {message.files.map((file) => {
         const thumb = getThumbnail(file)
         if (!thumb) {
@@ -104,8 +118,7 @@ export const UploadMessageItem: React.FC<{ message: UploadMessage }> = ({
           </div>
         )
       })}
-      <div></div>
-    </div>
+    </MessageItemBase>
   )
 }
 
