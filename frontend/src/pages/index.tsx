@@ -6,15 +6,16 @@ import head from '@/lib/helper/head'
 
 interface HomePageProps {
   date: string | null
-  channels: string[] | null
+  channels: string | null
 }
-export const getServerSideProps: GetServerSideProps = (context) => {
-  const channels = context.query.ch
-    ? decodeURIComponent(head(context.query.ch) as string).split(',')
-    : null
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const date = head(context.query.date)
+  const channels = head(context.query.ch)
+
   return {
     props: {
-      date: context.query.date ?? null,
+      date,
       channels,
     },
   }
@@ -24,7 +25,7 @@ const HomePage: NextPage<HomePageProps> = (props) => {
   const { setSelectChannel, setDate } = useChannelViewMutators()
   React.useEffect(() => {
     if (props.date) setDate(new Date(props.date))
-    if (props.channels) setSelectChannel(props.channels)
+    if (props.channels) setSelectChannel(props.channels.split(','))
   }, [])
   return <Home />
 }
