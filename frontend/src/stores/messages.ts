@@ -16,23 +16,6 @@ const mapResponse = (data: messages_MessagesQuery$data): ChannelMessage[] => {
   }))
 }
 
-const richTextSectionFragment = getNode(graphql`
-  fragment messages_RichTextSectionFragment on RichTextSection {
-    type
-    elements {
-      type
-      text
-      url
-      user_id
-      emoji {
-        type
-        name
-        unicode
-      }
-    }
-  }
-`)
-
 export const MessagesQuery = graphQLSelector({
   key: 'MessageList',
   environment: relayEnvironmentKey,
