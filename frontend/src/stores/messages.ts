@@ -16,6 +16,23 @@ const mapResponse = (data: messages_MessagesQuery$data): ChannelMessage[] => {
   }))
 }
 
+const richTextSectionFragment = getNode(graphql`
+  fragment messages_RichTextSectionFragment on RichTextSection {
+    type
+    elements {
+      type
+      text
+      url
+      user_id
+      emoji {
+        type
+        name
+        unicode
+      }
+    }
+  }
+`)
+
 export const MessagesQuery = graphQLSelector({
   key: 'MessageList',
   environment: relayEnvironmentKey,
@@ -28,49 +45,79 @@ export const MessagesQuery = graphQLSelector({
             name
             messages(date: $date) {
               edges {
-                __typename
                 type
+                subtype
                 ts
-                ... on UserMessage {
-                  user
-                  text
-                  user_profile {
-                    display_name
-                    real_name
-                    image_72
-                  }
+                text
+                user
+                username
+                icons {
+                  image_72
                 }
-                ... on JoinMessage {
-                  user
-                  text
-                  user_profile {
-                    display_name
-                    real_name
-                    image_72
-                  }
+                user_profile {
+                  display_name
+                  real_name
+                  image_72
                 }
-                ... on UploadMessage {
-                  user
-                  text
-                  user_profile {
-                    display_name
-                    real_name
-                    image_72
-                  }
-                  files {
-                    id
-                    name
-                    permalink
-                    url_private
-                    thumb_360
-                    thumb_360_h
-                    thumb_360_w
-                    thumb_480
-                    thumb_480_h
-                    thumb_480_w
-                    thumb_720
-                    thumb_720_h
-                    thumb_720_w
+
+                files {
+                  id
+                  name
+                  permalink
+                  url_private
+                  thumb_360
+                  thumb_360_h
+                  thumb_360_w
+                  thumb_480
+                  thumb_480_h
+                  thumb_480_w
+                  thumb_720
+                  thumb_720_h
+                  thumb_720_w
+                }
+
+                blocks {
+                  type
+                  elements {
+                    __typename
+                    type
+                    ... on RichTextSection {
+                      type
+                      elements {
+                        type
+                        text
+                        url
+                        user_id
+                        emoji {
+                          type
+                          name
+                          unicode
+                        }
+                        style {
+                          code
+                        }
+                      }
+                    }
+                    ... on RichTextList {
+                      type
+                      elements {
+                        type
+                        elements {
+                          type
+                          text
+                          url
+                          user_id
+                          emoji {
+                            type
+                            name
+                            unicode
+                          }
+                          style {
+                            code
+                          }
+                        }
+                      }
+                    }
                   }
                 }
               }

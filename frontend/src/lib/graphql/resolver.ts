@@ -53,20 +53,12 @@ export const resolvers: Resolvers<ApolloContext> = {
     },
   },
 
-  Message: {
-    __resolveType: (obj, _context, _info) => {
-      // Not implemented message type
-      if (obj.type !== 'message') return 'UnknownMessage'
-
-      if (!('subtype' in obj)) {
-        if ('files' in obj) return 'UploadMessage'
-        if (!('user' in obj)) return 'UnknownMessage'
-        return 'UserMessage'
-      }
-
-      if (obj.subtype === 'bot_message') return 'BotMessage'
-      else if (obj.subtype === 'channel_join') return 'JoinMessage'
-      else return 'UnknownMessage'
+  Element: {
+    __resolveType: (parent, elements) => {
+      if (parent.type === 'rich_text_section') return 'RichTextSection'
+      else if (parent.type === 'rich_text_quote') return 'RichTextSection'
+      else if (parent.type === 'rich_text_list') return 'RichTextList'
+      else return null
     },
   },
 }

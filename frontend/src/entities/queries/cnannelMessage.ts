@@ -4,7 +4,20 @@ export interface ChannelMessage {
   messages: Message[]
 }
 
-export type Message = JoinMessage | UnknownMessage | UserMessage | UploadMessage
+export interface Message {
+  type: string
+  ts: string
+  subtype?: string
+  user?: string
+  user_profile?: UserProfile
+  text?: string
+  blocks?: MessageBlock[]
+  files?: UploadFileInfo[]
+
+  // bot
+  username?: string
+  icons?: BotIcon
+}
 
 export interface UserProfile {
   display_name: string
@@ -12,34 +25,48 @@ export interface UserProfile {
   image_72: string
 }
 
-export interface JoinMessage {
-  __typename: 'JoinMessage'
-  type: 'message'
-  subtype: 'join_channel'
-  ts: string
-  user: string
-  user_profile?: UserProfile
-  text: string
+export interface MessageBlock {
+  type: string
+  block_id: string
+  elements: BlockElement[]
 }
 
-export interface UserMessage {
-  __typename: 'UserMessage'
-  type: 'message'
-  subtype: undefined
-  ts: string
-  user: string
-  text: string
-  user_profile?: UserProfile
+interface RichTextSection {
+  type: 'rich_text_section'
+  elements: Section[]
 }
 
-export interface UploadMessage {
-  __typename: 'UploadMessage'
-  type: 'message'
-  ts: string
-  user: string
-  user_profile?: UserProfile
-  text: string
-  files: UploadFileInfo[]
+interface RichTextQuote {
+  type: 'rich_text_quote'
+  elements: Section[]
+}
+
+interface RichTextList {
+  type: 'rich_text_list'
+  elements: RichTextSection[]
+}
+
+export type BlockElement = RichTextSection | RichTextList | RichTextQuote
+
+export interface Section {
+  type: 'text' | 'link' | 'emoji' | 'user' | 'channel'
+  text?: string
+  url?: string
+  user_id?: string
+  emoji?: {
+    type: string
+    name: string
+    unicode?: string
+  }
+  style?: {
+    code: boolean
+  }
+}
+
+export interface BotIcon {
+  image_36?: string
+  image_48?: string
+  image_72?: string
 }
 
 export interface UploadFileInfo {
@@ -55,14 +82,6 @@ export interface UploadFileInfo {
   thumb_720?: string
   thumb_720_w?: string
   thumb_720_h?: string
-}
-
-export interface UnknownMessage {
-  __typename: 'UnknownMessage'
-  type: 'message'
-  subtype: 'bot_message'
-  ts: string
-  text: string
 }
 
 export const getThumbnail = (

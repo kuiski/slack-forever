@@ -6,7 +6,7 @@ import Box from '@mui/material/Box'
 import { useChannelViewState } from '@/stores/view'
 import { useMessages } from '@/stores/messages'
 import Typography from '@mui/material/Typography'
-import { MessageContainer } from '@/components/ui/message/Message'
+import MessageContent from '@/components/ui/message/MessageContent'
 
 const ChannelMessageContainer: React.FC = () => {
   const { selected, date } = useChannelViewState()
@@ -40,7 +40,9 @@ const MessageContentContainer = () => {
         }}
       >
         <Typography variant="h6">#{channels[0].name}</Typography>
-        <MessageContainer messages={channels[0].messages} />
+        {channels[0].messages?.map((message) => (
+          <MessageContent key={message.ts} message={message} />
+        ))}
       </Box>
     )
   }
@@ -59,7 +61,9 @@ const MessageContentContainer = () => {
           <Typography variant="h6" sx={{ mb: 1 }}>
             #{channel.name}
           </Typography>
-          <MessageContainer messages={channel.messages} />
+          {channel.messages?.map((message) => (
+            <MessageContent key={message.ts} message={message} />
+          ))}
         </Paper>
       ))}
     </Box>

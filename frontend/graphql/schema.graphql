@@ -60,36 +60,18 @@ type ChannelPurpose {
   lastSet: Int
 }
 
-interface Message {
-  type: String!
+type Message {
+  type: String! # message
+  subtype: String # channel_join, channel_purpose, bot_add, bot_message, thead_broadcast
   ts: String!
-  text: String!
-}
-
-type JoinMessage implements Message {
-  type: String!
-  subtype: String!
-  ts: String!
-  text: String!
-  user: String!
+  text: String
+  user: String
+  username: String
+  icons: [BotIcon]
   user_profile: UserProfile
-}
-
-type UserMessage implements Message {
-  type: String!
-  ts: String!
-  text: String!
-  user: String!
-  user_profile: UserProfile
-}
-
-type UploadMessage implements Message {
-  type: String!
-  ts: String!
-  text: String!
-  user: String!
-  files: [UploadFileInfo!]
-  user_profile: UserProfile
+  files: [UploadFileInfo]
+  blocks: [Block]
+  purpose: String
 }
 
 type UploadFileInfo {
@@ -114,20 +96,44 @@ type BotIcon {
   image_72: String
 }
 
-type BotMessage implements Message {
-  type: String!
-  subtype: String!
-  ts: String!
-  text: String!
-  username: String!
-  icons: BotIcon!
+type Block {
+  type: String! # rich_text
+  block_id: String
+  alt_text: String
+  elements: [Element]
 }
 
-type UnknownMessage implements Message {
+interface Element {
+  type: String # rich_text_section, rich_text_list
+}
+
+type RichTextSection implements Element {
+  type: String # rich_text_section, rich_text_quote
+  elements: [ElementItem]
+}
+
+type RichTextList implements Element {
+  type: String
+  elements: [RichTextSection]
+}
+
+type ElementItem {
+  type: String
+  text: String
+  url: String
+  user_id: String
+  emoji: Emoji
+  style: TextStyle
+}
+
+type TextStyle {
+  code: Boolean
+}
+
+type Emoji {
   type: String!
-  subtype: String
-  ts: String!
-  text: String!
+  name: String!
+  unicode: String
 }
 
 type ChannelsConnection {

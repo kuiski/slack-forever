@@ -51,9 +51,9 @@ export class CloudStorageDatasource extends SlackLogDatasource {
         rawChannels.find((channel) => channel.id === id)
       )
       const res = []
-      for (let rawChannel of filteredRawChannels) {
+      for (const rawChannel of filteredRawChannels) {
         const members = []
-        for (let memberId of rawChannel.members) {
+        for (const memberId of rawChannel.members) {
           members.push(await this.getUser(memberId))
         }
         res.push(members)
@@ -63,8 +63,14 @@ export class CloudStorageDatasource extends SlackLogDatasource {
     })
 
     this.channelMessageLoader = new DataLoader(async (ids) => {
-      const promises = ids.map(([channelId, date]) => {
-        return this._fetchMessages(channelId, date)
+      const promises = ids.map(async ([channelId, date]) => {
+        const rawMessages = await this._fetchMessages(channelId, date)
+        const messages = []
+        for (const rawMessage of rawMessages) {
+          messages.push(rawMessage)
+        }
+
+        return messages
       })
 
       return await Promise.all(promises)

@@ -5,19 +5,17 @@ schema {
   query: Query
 }
 
+type Block {
+  alt_text: String
+  block_id: String
+  elements: [Element]
+  type: String!
+}
+
 type BotIcon {
   image_36: String
   image_48: String
   image_72: String
-}
-
-type BotMessage implements Message {
-  icons: BotIcon!
-  subtype: String!
-  text: String!
-  ts: String!
-  type: String!
-  username: String!
 }
 
 type Channel {
@@ -58,19 +56,37 @@ type ChannelsConnection {
   nodes: [Channel]
 }
 
-type JoinMessage implements Message {
-  subtype: String!
-  text: String!
-  ts: String!
-  type: String!
-  user: String!
-  user_profile: UserProfile
+interface Element {
+  type: String
 }
 
-interface Message {
-  text: String!
+type ElementItem {
+  emoji: Emoji
+  style: TextStyle
+  text: String
+  type: String
+  url: String
+  user_id: String
+}
+
+type Emoji {
+  name: String!
+  type: String!
+  unicode: String
+}
+
+type Message {
+  blocks: [Block]
+  files: [UploadFileInfo]
+  icons: [BotIcon]
+  purpose: String
+  subtype: String
+  text: String
   ts: String!
   type: String!
+  user: String
+  user_profile: UserProfile
+  username: String
 }
 
 type Query {
@@ -78,11 +94,18 @@ type Query {
   viewer: Viewer!
 }
 
-type UnknownMessage implements Message {
-  subtype: String
-  text: String!
-  ts: String!
-  type: String!
+type RichTextList implements Element {
+  elements: [RichTextSection]
+  type: String
+}
+
+type RichTextSection implements Element {
+  elements: [ElementItem]
+  type: String
+}
+
+type TextStyle {
+  code: Boolean
 }
 
 type UploadFileInfo {
@@ -101,15 +124,6 @@ type UploadFileInfo {
   url_private: String
 }
 
-type UploadMessage implements Message {
-  files: [UploadFileInfo!]
-  text: String!
-  ts: String!
-  type: String!
-  user: String!
-  user_profile: UserProfile
-}
-
 type User {
   deleted: Boolean
   id: String
@@ -117,14 +131,6 @@ type User {
   profile: UserProfile
   team_id: String
   updated: Int
-}
-
-type UserMessage implements Message {
-  text: String!
-  ts: String!
-  type: String!
-  user: String!
-  user_profile: UserProfile
 }
 
 type UserProfile {

@@ -10,8 +10,7 @@ frontend
 │   └── schema.graphql … GraphQLスキーマ
 ├── src
 │   ├── components
-│   │   ├── elements … ボタンなどの汎用的なパーツ(Stateless)
-│   │   ├── hoc … 一部の高階コンポーネント
+│   │   ├── hoc … 汎用的な高階コンポーネント
 │   │   ├── layouts … レイアウトに関わるもの(Headerとかもここ)
 │   │   ├── pages … ページ(src/pagesから参照)
 │   │   ├── ui … ページやレイアウトから参照するコンポーネント全般(StatelessでもStatefulでも可)
